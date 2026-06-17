@@ -1,0 +1,56 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: despacho_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  ventas:
+    build:
+      context: ./back-Ventas_SpringBoot/Springboot-API-REST
+    container_name: ventas_service
+    ports:
+      - "8090:8080"
+    depends_on:
+      - mysql
+    environment:
+      DB_ENDPOINT: mysql
+      DB_PORT: 3306
+      DB_NAME: despacho_db
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+  despachos:
+    build:
+      context: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
+    container_name: despachos_service
+    ports:
+      - "8091:8081"
+    depends_on:
+      - mysql
+    environment:
+      DB_ENDPOINT: mysql
+      DB_PORT: 3306
+      DB_NAME: despacho_db
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+  frontend:
+    build:
+      context: ./front_despacho
+    container_name: frontend_service
+    ports:
+      - "5174:80"
+    depends_on:
+      - ventas
+      - despachos
+
+volumes:
+  mysql_data:
