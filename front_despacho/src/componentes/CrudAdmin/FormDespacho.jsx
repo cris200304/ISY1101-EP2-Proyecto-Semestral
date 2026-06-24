@@ -25,7 +25,7 @@ export const FormDespacho = ({ venta, onClose }) => {
 
     try {
       await axios.put(
-        `http://localhost:8090/api/v1/ventas/${venta.idVenta}`,
+        `http://98.93.96.96:8090/api/v1/ventas/${venta.idVenta}`,
         jsonDataSales,
         {
           headers:{
@@ -34,7 +34,7 @@ export const FormDespacho = ({ venta, onClose }) => {
       }
         }
       );
-      await axios.post("http://localhost:8091/api/v1/despachos", jsonData, {
+      await axios.post("http://98.93.96.96:8091/api/v1/despachos", jsonData, {
         headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'

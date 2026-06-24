@@ -1,0 +1,68 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - deploy
+
+jobs:
+
+  backend-ventas:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: back-Ventas_SpringBoot/Springboot-API-REST
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Compilar Ventas
+        run: mvn clean package -DskipTests
+
+  backend-despachos:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Compilar Despachos
+        run: mvn clean package -DskipTests
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: front_despacho
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Compilar Frontend
+        run: npm run build
